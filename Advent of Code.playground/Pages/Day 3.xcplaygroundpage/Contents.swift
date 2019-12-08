@@ -78,6 +78,8 @@ extension Array where Element == Substring {
 let path1 = wire1path.toArray().toVectors()
 let path2 = wire2path.toArray().toVectors()
 
+print("path1 length: \(path1.map{$0.distance}.reduce(0, +))")
+
 var points1: Set<Point> = []
 var currentPoint = Point(x: 0, y: 0)
 for vector in path1 {
