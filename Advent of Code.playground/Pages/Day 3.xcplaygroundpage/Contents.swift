@@ -80,23 +80,28 @@ let path2 = wire2path.toArray().toVectors()
 
 print("path1 length: \(path1.map{$0.distance}.reduce(0, +))")
 
-var points1: Set<Point> = []
+// var points1: Set<Point> = []
+var points1: [Point:Int] = [:]
 var currentPoint = Point(x: 0, y: 0)
+var steps: Int = 0
 for vector in path1 {
     for _ in 1...vector.distance {
         currentPoint += vector.direction.delta
-        points1.insert(currentPoint)
+        steps += 1
+        points1[currentPoint] = steps
     }
 }
 
 var closestCollision: Int = Int.max
 currentPoint = Point(x: 0, y: 0)
+steps = 0
 for vector in path2 {
     for _ in 1...vector.distance {
         currentPoint += vector.direction.delta
-        if points1.contains(currentPoint) {
+        steps += 1
+        if let path1steps = points1[currentPoint] {
             // collisions.insert(currentPoint)
-            let distance = currentPoint.x + currentPoint.y
+            let distance = steps + path1steps
             print("Hit at \(currentPoint), distance: \(distance)")
             closestCollision = min(closestCollision, distance)
         }
