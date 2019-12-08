@@ -12,6 +12,10 @@ extension Point {
         return Point(x: x, y: y)
     }
     
+    public static func += (lhs: inout Point, rhs: Point) {
+        lhs = lhs + rhs
+    }
+    
     public static func * (lhs: Point, rhs: Int) -> Point {
         let x = lhs.x * rhs
         let y = lhs.y * rhs
