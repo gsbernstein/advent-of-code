@@ -92,16 +92,14 @@ for vector in path1 {
 var closestCollision: Int = Int.max
 currentPoint = Point(x: 0, y: 0)
 for vector in path2 {
-    var remainingDist = vector.distance
-    while remainingDist > 0 {
-        currentPoint = currentPoint + vector.direction.delta
+    for _ in 1...vector.distance {
+        currentPoint += vector.direction.delta
         if points1.contains(currentPoint) {
             // collisions.insert(currentPoint)
             let distance = currentPoint.x + currentPoint.y
             print("Hit at \(currentPoint), distance: \(distance)")
             closestCollision = min(closestCollision, distance)
         }
-        remainingDist-=1
     }
 }
 print(closestCollision)
