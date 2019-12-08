@@ -77,8 +77,8 @@ for vector in path1 {
         remainingDist-=1
     }
 }
-// var collisions: Set<Point> = []
-var closestCollision: Int = 99999
+
+var closestCollision: Int = Int.max
 currentPoint = Point(x: 0, y: 0)
 for vector in path2 {
     var remainingDist = vector.distance
