@@ -87,7 +87,7 @@ for vector in path1 {
     while remainingDist > 0 {
         currentPoint += vector.direction.delta
         points1.insert(currentPoint)
-        remainingDist-=1
+        remainingDist -= 1
     }
 }
 
