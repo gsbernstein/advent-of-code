@@ -5,6 +5,16 @@ let wire2path = "L998,U662,R342,U104,R140,U92,R67,D102,L225,U265,R641,U592,L295,
 
 struct Point: Hashable { let x, y: Int }
 
+struct Vector {
+    let direction: Direction
+    let distance: Int
+    
+    var x_y: Point {
+        let delta = direction.delta
+        return delta*distance
+    }
+}
+
 extension Point {
     public static func + (lhs: Point, rhs: Point) -> Point {
         let x = lhs.x + rhs.x
@@ -50,16 +60,6 @@ enum Direction: String {
         case .L: return Point(x: 0, y: -1)
         case .R: return Point(x: 0, y: 1)
         }
-    }
-}
-
-struct Vector {
-    let direction: Direction
-    let distance: Int
-    
-    var x_y: Point {
-        let delta = direction.delta
-        return delta*distance
     }
 }
 
