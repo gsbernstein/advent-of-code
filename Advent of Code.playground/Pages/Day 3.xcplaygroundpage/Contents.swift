@@ -52,15 +52,22 @@ enum Direction: String {
 struct Vector {
     let direction: Direction
     let distance: Int
+    
+    var x_y: Point {
+        let delta = direction.delta
+        return delta*distance
+    }
+}
+
+func toVector(_ substring: Substring) -> Vector {
+    let dir = Direction(rawValue: String(substring.first!))!
+    let dist = Int(substring.dropFirst())!
+    return Vector(direction: dir, distance: dist)
 }
 
 extension Array where Element == Substring {
     func toVectors() -> [Vector] {
-        self.map { string in
-            let dir = Direction(rawValue: String(string.first!))!
-            let dist = Int(string.dropFirst())!
-            return Vector(direction: dir, distance: dist)
-        }
+        self.map(toVector(_:))
     }
 }
 
