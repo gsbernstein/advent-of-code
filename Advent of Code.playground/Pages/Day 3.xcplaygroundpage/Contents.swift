@@ -83,11 +83,9 @@ print("path1 length: \(path1.map{$0.distance}.reduce(0, +))")
 var points1: Set<Point> = []
 var currentPoint = Point(x: 0, y: 0)
 for vector in path1 {
-    var remainingDist = vector.distance
-    while remainingDist > 0 {
+    for _ in 1...vector.distance {
         currentPoint += vector.direction.delta
         points1.insert(currentPoint)
-        remainingDist -= 1
     }
 }
 
