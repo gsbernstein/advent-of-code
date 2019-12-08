@@ -85,7 +85,7 @@ var currentPoint = Point(x: 0, y: 0)
 for vector in path1 {
     var remainingDist = vector.distance
     while remainingDist > 0 {
-        currentPoint = currentPoint + vector.direction.delta
+        currentPoint += vector.direction.delta
         points1.insert(currentPoint)
         remainingDist-=1
     }
