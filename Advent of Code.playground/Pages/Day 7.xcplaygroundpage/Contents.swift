@@ -188,7 +188,7 @@ print(phasePermutations.count)
 func evalSettings(settings: [Int]) -> Int {
     var input = 0
     for setting in phaseSettings {
-        let amp = Amp(phaseSetting: setting, input: 0)
+        let amp = Amp(phaseSetting: setting, input: input)
         amp.run()
         input = amp.output.first!
     }
