@@ -44,8 +44,8 @@ func store(_ destination: Int, _: Int, _: Int) {
     program[destination] = 1
 }
 
-func output(_ value: Int, _: Int, _: Int) {
-    print("out: \(value)")
+func output(_ position: Int, _: Int, _: Int) {
+    print("out: \(program[position])")
 }
 
 var position = 0
