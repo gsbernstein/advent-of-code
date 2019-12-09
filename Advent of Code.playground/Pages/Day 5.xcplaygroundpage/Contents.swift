@@ -5,12 +5,13 @@ let test3 = [3,3,1108,-1,8,3,4,3,99]
 let test4 = [3,3,1107,-1,8,3,4,3,99]
 let jump1 = [3,12,6,12,15,1,13,14,13,4,13,99,-1,0,1,9]
 let jump2 = [3,3,1105,-1,9,1101,0,0,12,4,12,99,1]
+let largeTest = [3,21,1008,21,8,20,1005,20,22,107,8,21,20,1006,20,31,1106,0,36,98,0,0,1002,21,125,20,4,20,1105,1,46,104,999,1105,1,46,1101,1000,1,20,4,20,1105,1,46,98,99]
 
-var program: [Int] = jump1
+var program: [Int] = finalIn
 
 var position = 0
-let input = 0
-let debug = true
+let input = 5
+let debug = false
 
 public extension String {
     func leftPad(to width: Int, with paddingString: String = " ") -> String {
@@ -73,16 +74,16 @@ func output(_ position: Int?, _: Int?, _: Int?) -> Bool {
 }
 
 func jumpIfTrue(_ condition: Int?, _ value: Int?, _: Int?) -> Bool {
-    if condition != 0 {
-        position = value!
+    if program[condition!] != 0 {
+        position = program[value!]
         return true
     }
     else { return false }
 }
 
 func jumpIfFalse(_ condition: Int?, _ value: Int?, _: Int?) -> Bool {
-    if condition == 0 {
-        position = value!
+    if program[condition!] == 0 {
+        position = program[value!]
         return true
     }
     else { return false }
