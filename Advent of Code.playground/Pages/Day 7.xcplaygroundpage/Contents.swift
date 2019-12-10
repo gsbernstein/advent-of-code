@@ -1,7 +1,9 @@
 let real = [    3,8,1001,8,10,8,105,1,0,0,21,34,47,72,93,110,191,272,353,434,99999,3,9,102,3,9,9,1001,9,3,9,4,9,99,3,9,102,4,9,9,1001,9,4,9,4,9,99,3,9,101,3,9,9,1002,9,3,9,1001,9,2,9,1002,9,2,9,101,4,9,9,4,9,99,3,9,1002,9,3,9,101,5,9,9,102,4,9,9,1001,9,4,9,4,9,99,3,9,101,3,9,9,102,4,9,9,1001,9,3,9,4,9,99,3,9,101,2,9,9,4,9,3,9,1001,9,2,9,4,9,3,9,101,2,9,9,4,9,3,9,1002,9,2,9,4,9,3,9,102,2,9,9,4,9,3,9,1002,9,2,9,4,9,3,9,102,2,9,9,4,9,3,9,101,1,9,9,4,9,3,9,1002,9,2,9,4,9,3,9,1002,9,2,9,4,9,99,3,9,102,2,9,9,4,9,3,9,1002,9,2,9,4,9,3,9,102,2,9,9,4,9,3,9,1002,9,2,9,4,9,3,9,1001,9,1,9,4,9,3,9,1001,9,2,9,4,9,3,9,102,2,9,9,4,9,3,9,101,1,9,9,4,9,3,9,1001,9,1,9,4,9,3,9,101,2,9,9,4,9,99,3,9,1001,9,1,9,4,9,3,9,1001,9,2,9,4,9,3,9,101,2,9,9,4,9,3,9,101,2,9,9,4,9,3,9,1001,9,1,9,4,9,3,9,1001,9,1,9,4,9,3,9,1001,9,1,9,4,9,3,9,102,2,9,9,4,9,3,9,101,2,9,9,4,9,3,9,1001,9,2,9,4,9,99,3,9,1002,9,2,9,4,9,3,9,1001,9,2,9,4,9,3,9,102,2,9,9,4,9,3,9,1002,9,2,9,4,9,3,9,102,2,9,9,4,9,3,9,101,2,9,9,4,9,3,9,1002,9,2,9,4,9,3,9,1001,9,2,9,4,9,3,9,102,2,9,9,4,9,3,9,1002,9,2,9,4,9,99,3,9,101,1,9,9,4,9,3,9,101,1,9,9,4,9,3,9,101,2,9,9,4,9,3,9,102,2,9,9,4,9,3,9,1001,9,2,9,4,9,3,9,101,1,9,9,4,9,3,9,102,2,9,9,4,9,3,9,1001,9,1,9,4,9,3,9,101,1,9,9,4,9,3,9,1002,9,2,9,4,9,99]
 let test1 = [3,15,3,16,1002,16,10,16,1,16,15,15,4,15,99,0,0]
+let test2 = [3,23,3,24,1002,24,10,24,1002,23,-1,23,101,5,23,23,1,24,23,23,4,23,99,0,0]
+let test3 = [3,31,3,32,1002,32,10,32,1001,31,-2,31,1007,31,0,33,1002,33,7,33,1,33,31,31,1,32,31,31,4,31,99,0,0,0]
 
-let ampSoftware = test1
+let ampSoftware = real
 let debug = false
 
 class IntcodeComputer {
@@ -28,7 +30,7 @@ class IntcodeComputer {
     }
 
     func store(_ destination: Int?, _: Int?, _: Int?) -> Bool {
-        print("taking input")
+//        print("taking input")
 //        guard let input = self.input else { self.continue = false; return true }
         program[destination!] = input[0]
         input.removeFirst()
@@ -36,7 +38,8 @@ class IntcodeComputer {
     }
 
     func output(_ position: Int?, _: Int?, _: Int?) -> Bool {
-        outputHandler!(program[position!])
+        output.append(program[position!])
+//        outputHandler?(program[position!])
         return false
     }
 
@@ -89,7 +92,7 @@ class IntcodeComputer {
             case 6: maybeoperation = jumpIfFalse;           length = 3
             case 7: maybeoperation = lessThan;              length = 4
             case 8: maybeoperation = equals;                length = 4
-            case 99: print("halt"); break loop
+            case 99: /*print("halt");*/ break loop
             default: print("error, opcode was \(instruction)"); break loop
             }
             
@@ -183,11 +186,11 @@ func permuteWirth<T>(_ a: [T], _ n: Int) -> [[T]] {
 
 let phaseSettings = [0,1,2,3,4]
 let phasePermutations = permuteWirth(phaseSettings, phaseSettings.count - 1)
-print(phasePermutations.count)
+//print(phasePermutations)
 
 func evalSettings(settings: [Int]) -> Int {
     var input = 0
-    for setting in phaseSettings {
+    for setting in settings {
         let amp = Amp(phaseSetting: setting, input: input)
         amp.run()
         input = amp.output.first!
@@ -195,7 +198,16 @@ func evalSettings(settings: [Int]) -> Int {
     return input
 }
 
-phasePermutations.map { (settings) -> Int in
-    evalSettings(settings: settings)
-}.max()
+var currentMax = 0
+var currentBestSettings: [Int]?
 
+for settings in phasePermutations {
+    let score = evalSettings(settings: settings)
+//    print(settings,score)
+    if score > currentMax {
+        currentMax = score
+        currentBestSettings = settings
+    }
+}
+
+print(currentMax, currentBestSettings!)
