@@ -144,6 +144,14 @@ extension Point {
     public var slope: Double {
         Double(y)/Double(x)
     }
+    
+    public var angleDeg: Double {
+        angleBetween(Point.zero, self)
+    }
+    
+    public static var zero: Point {
+        Point(x: 0, y: 0)
+    }
 }
 
 extension Point: CustomStringConvertible {
@@ -202,41 +210,45 @@ func findStation(input: String) -> (Point,Int) {
 
 func nthToVaporize(input: String, station: Point, n: Int) -> Point {
     let array = input.split{ $0.isNewline }
-    var pointsBySlope = [Double:[Double:Point]]()
+    var pointsByAngle = [Double:[Double:Point]]()
     for (rowNo, row) in array.enumerated() {
         for (colNo, point) in row.enumerated() {
             if point == "#" {
                 let point = Point(x: colNo, y: rowNo)
-                let dif = station - point
+                let dif = point - station
                 let dist = dif.length
-                let slope = angleBetween(station,point)
-                if pointsBySlope[slope] != nil {
-                    pointsBySlope[slope]![dist] = point
+                let angle = dif.angleDeg
+                if pointsByAngle[angle] != nil {
+                    pointsByAngle[angle]![dist] = point
                 } else {
-                    pointsBySlope[slope] = [dist:point]
+                    pointsByAngle[angle] = [dist:point]
                 }
             }
         }
     }
-    let slopes = pointsBySlope.keys.sorted()
+    let angles = pointsByAngle.keys.sorted()
     var count = 0
     mainLoop: while true {
-        for slope in slopes {
+        for angle in angles {
               // only necessary if up isn't zero:
 //            if count == 0 {
 //                guard slope >= 0 else { continue }
 //            }
-            guard let target = pointsBySlope[slope]?
+            print(angle)
+            print(pointsByAngle[angle]!)
+            guard let target = pointsByAngle[angle]?
                 .min(by: { $0.key < $1.key }) else { continue }
             count += 1
             print(count,target.value)
             if count >= 200 { return target.value }
-            pointsBySlope[slope]!.removeValue(forKey: target.key)
+            pointsByAngle[angle]!.removeValue(forKey: target.key)
         }
     }
 }
-let input = realInput
-let station = findStation(input: input).0
-//let station = Point(x: 11, y: 13)
+let input = input5
+//let calculatedStation = findStation(input: input).0
+let input5Station = Point(x: 11, y: 13)
+let realInputStation = Point(x: 28, y: 29)
+let station = input5Station
 
 print(nthToVaporize(input: input, station: station, n: 200))
