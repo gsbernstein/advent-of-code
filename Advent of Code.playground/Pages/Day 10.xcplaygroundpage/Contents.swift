@@ -222,11 +222,10 @@ func nthToVaporize(input: String, station: Point, n: Int) -> Point {
     var count = 0
     mainLoop: while true {
         for slope in slopes {
+              // only necessary if up isn't zero:
 //            if count == 0 {
 //                guard slope >= 0 else { continue }
 //            }
-//            print(slope)
-//            print(pointsBySlope[slope])
             guard let target = pointsBySlope[slope]?
                 .min(by: { $0.key < $1.key }) else { continue }
             count += 1
