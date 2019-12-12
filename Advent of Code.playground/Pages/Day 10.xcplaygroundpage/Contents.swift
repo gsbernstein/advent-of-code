@@ -136,6 +136,14 @@ extension Point {
         let y = lhs.y * rhs
         return Point(x: x, y: y)
     }
+    
+    public var length: Double {
+        Double(x*x + y*y).squareRoot()
+    }
+    
+    public var slope: Double {
+        Double(y)/Double(x)
+    }
 }
 
 extension Point: CustomStringConvertible {
@@ -167,10 +175,9 @@ func findStation(input: String) -> (Point,Int) {
                 var canSee = 0
                 var bestPerSlope = [Double:(Point,Double)]()
                 for (point,_) in scores {
-                    let difX = Double(colNo - point.x)
-                    let difY = Double(rowNo - point.y)
-                    let dist = (difX*difX + difY*difY).squareRoot()
-                    let slope = difY/difX
+                    let dif = Point(x: colNo, y: rowNo) - point
+                    let dist = dif.length
+                    let slope = dif.slope // good enough because we're only looking in one quadrant
                     if let (_, dist2) = bestPerSlope[slope],
                         dist2 < dist {
                         continue
@@ -200,10 +207,8 @@ func nthToVaporize(input: String, station: Point, n: Int) -> Point {
         for (colNo, point) in row.enumerated() {
             if point == "#" {
                 let point = Point(x: colNo, y: rowNo)
-                let difX = Double(station.x - point.x)
-                let difY = Double(station.y - point.y)
-                let dist = (difX*difX + difY*difY).squareRoot()
-//                let slope = difY/difX
+                let dif = station - point
+                let dist = dif.length
                 let slope = angleBetween(station,point)
                 if pointsBySlope[slope] != nil {
                     pointsBySlope[slope]![dist] = point
