@@ -143,6 +143,21 @@ extension Point: CustomStringConvertible {
         return "(\(x), \(y))"
     }
 }
+
+import CoreGraphics
+
+func angleBetween(_ p1: Point, _ p2: Point) -> Double {
+    let bearingPoint = p2-p1
+    let radians = atan2(Double(bearingPoint.y),Double(bearingPoint.x))
+    var degrees = radians * 180 / Double.pi
+    degrees = degrees + 90
+    return degrees >= 0 ? degrees : 360 + degrees
+}
+
+//print(angleBetween(Point(x: 0, y: 0), Point(x: 0, y: -1))) // expect 0
+//print(angleBetween(Point(x: 0, y: 0), Point(x: 1, y: -1))) // expect 45
+//print(angleBetween(Point(x: 0, y: 0), Point(x: 1, y: 0))) // expect 90
+
 func findStation(input: String) -> (Point,Int) {
     let array = input.split{ $0.isNewline }
     var scores = [Point:Int]()
@@ -176,16 +191,6 @@ func findStation(input: String) -> (Point,Int) {
         let (_, value2) = rhs
         return value1 < value2
     })!
-}
-
-import CoreGraphics
-
-func angleBetween(_ p1: Point, _ p2: Point) -> Double {
-    let bearingPoint = p2-p1
-    let radians = atan2(Double(bearingPoint.y),Double(bearingPoint.x))
-    var degrees = radians * 180 / Double.pi
-    degrees = degrees + 90
-    return degrees >= 0 ? degrees : 360 + degrees
 }
 
 func nthToVaporize(input: String, station: Point, n: Int) -> Point {
@@ -229,9 +234,5 @@ func nthToVaporize(input: String, station: Point, n: Int) -> Point {
 let input = realInput
 let station = findStation(input: input).0
 //let station = Point(x: 11, y: 13)
-
-//print(angleBetween(Point(x: 0, y: 0), Point(x: 0, y: -1)))
-//print(angleBetween(Point(x: 0, y: 0), Point(x: 1, y: -1)))
-//print(angleBetween(Point(x: 0, y: 0), Point(x: 1, y: 0)))
 
 print(nthToVaporize(input: input, station: station, n: 200))
