@@ -180,7 +180,7 @@ func findStation(input: String) -> (Point,Int) {
     for (rowNo, row) in array.enumerated() {
         for (colNo, point) in row.enumerated() {
             if point == "#" {
-                var canSee = 0
+                var canSeeOfExisting = 0
                 var bestPerSlope = [Double:(Point,Double)]()
                 for (point,_) in scores {
                     let dif = Point(x: colNo, y: rowNo) - point
@@ -194,10 +194,10 @@ func findStation(input: String) -> (Point,Int) {
                 }
                 for (_,(point,_)) in bestPerSlope {
                     scores[point]! += 1
-                    canSee += 1
+                    canSeeOfExisting += 1
                 }
                 let point = Point(x: colNo, y: rowNo)
-                scores[point] = /*(scores[point] ?? 0) +*/ canSee
+                scores[point] = canSeeOfExisting
             }
         }
     }
