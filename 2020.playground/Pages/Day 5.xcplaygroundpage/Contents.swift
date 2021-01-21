@@ -22,6 +22,16 @@ func stringToBinary(_ input: String) -> Int {
     return Int(String(inputBin), radix: 2)!
 }
 
-print(input1.map(codeToID(_:)).max())
+let taken = input1.map(codeToID(_:))
+
+print(taken.max()!)
+
+var allSeats = Array(0...947)
+
+allSeats.removeAll { seatCode -> Bool in
+    taken.contains(seatCode)
+}
+                       
+print(allSeats)
 
 //: [Next](@next)
