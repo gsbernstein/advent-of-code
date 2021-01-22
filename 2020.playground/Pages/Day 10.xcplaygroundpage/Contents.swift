@@ -17,4 +17,26 @@ func joltageGaps(_ input: [Int]) -> [Int: Int] {
 
 joltageGaps(input1)
 
+func outerArrangements(_ input: [Int]) -> Int {
+    let sorted = input1.sorted()
+    return arrangements(sorted:sorted)
+}
+
+// assumes sorted
+func arrangements(sorted: [Int]) -> Int {
+    for (index, adapter) in sorted.enumerated() {
+        if true {
+            return 1 + arrangements(sorted: sorted.removing(at: index))
+        } else {
+            return 0
+        }
+    }
+}
+
+extension Array {
+    func removing(at index: Int) -> Self {
+        return Array(self[..<index] + self[(index+1)...])
+    }
+}
+
 //: [Next](@next)
