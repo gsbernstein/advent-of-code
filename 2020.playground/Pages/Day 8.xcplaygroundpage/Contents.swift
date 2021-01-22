@@ -16,8 +16,9 @@ class Computer {
         self.instructions = instructions
     }
     
-    func run() -> Int {
-        while !visited.contains(position) {
+    func run() -> Int? {
+        while position < instructions.count {
+            if visited.contains(position) { return nil }
             visited.insert(position)
             let instruction = instructions[position]
             switch instruction.0 {
@@ -41,8 +42,20 @@ func parse(input: String) -> Int {
             return (op, param)
         }
     
-    let computer = Computer(instructions: instructions)
-    return computer.run()
+    for (index, instruction) in instructions.enumerated() {
+        guard instruction.0 != .acc else { continue }
+        
+        let newOp: Operation = instruction.0 == .jmp ? .nop : .jmp
+        
+        var newInstructions = instructions
+        newInstructions[index].0 = newOp
+        
+        let computer = Computer(instructions: newInstructions)
+        if let result = computer.run() {
+            return result
+        }
+    }
+    fatalError()
 }
 
 parse(input: input1)
