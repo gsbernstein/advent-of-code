@@ -48,25 +48,47 @@ let input = input1.components(separatedBy: "\n")
 
 var x = 0
 var y = 0
-var heading: Heading = .E
+var waypointX = 10
+var waypointY = 1
+
+func turn(_ direction: Direction, deg: Int) {
+    var deltaDeg = direction.isPositive ? deg : -deg
+    while deltaDeg >= 360 {
+        deltaDeg -= 360
+    }
+    
+    while deltaDeg < 0 {
+        deltaDeg += 360
+    }
+    switch deltaDeg {
+    case 90:
+        let newWayptX = waypointY
+        waypointY = -waypointX
+        waypointX = newWayptX
+    case 180:
+        waypointX = -waypointX; waypointY = -waypointY
+    case 270:
+        let newWayptX = -waypointY
+        waypointY = waypointX
+        waypointX = newWayptX
+    default:
+        fatalError()
+    }
+}
 
 for inst in input {
     switch inst.0 {
-    case .N: y += inst.1
-    case .S: y -= inst.1
-    case .E: x += inst.1
-    case .W: x -= inst.1
-    case .L: heading = heading.turn(.L, deg: inst.1)
-    case .R: heading = heading.turn(.R, deg: inst.1)
+    case .N: waypointY += inst.1
+    case .S: waypointY -= inst.1
+    case .E: waypointX += inst.1
+    case .W: waypointX -= inst.1
+    case .L: turn(.L, deg: inst.1)
+    case .R: turn(.R, deg: inst.1)
     case .F:
-        switch heading {
-        case .N: y += inst.1
-        case .S: y -= inst.1
-        case .E: x += inst.1
-        case .W: x -= inst.1
-        }
+        x += waypointX * inst.1
+        y += waypointY * inst.1
     }
-    print("\(inst.0.rawValue)\(inst.1): (\(x), \(y)), \(heading)")
+//    print("\(inst.0.rawValue)\(inst.1): (\(x), \(y)), \(heading)")
 }
 
 print(abs(x)+abs(y))
