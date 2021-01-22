@@ -1,6 +1,8 @@
 import Foundation
 
-public let reqd: [String: (String) -> Bool] = [
+public typealias Rule = (String) -> Bool
+
+public let reqd: [String: Rule] = [
     "byr": { Int($0).map { (1920...2002).contains($0) } ?? false }, // (Birth Year)
     "iyr": { Int($0).map { (2010...2020).contains($0) } ?? false }, // (Issue Year)
     "eyr": { Int($0).map { (2020...2030).contains($0) } ?? false }, // (Expiration Year)
@@ -11,7 +13,7 @@ public let reqd: [String: (String) -> Bool] = [
 //    "cid" // (Country ID)
 ]
 
-func validHeight(_ string: String) -> Bool {
+let validHeight: Rule = { string in
     var string = string
     if string.hasSuffix("in") {
         string.removeLast(2)
@@ -28,13 +30,13 @@ func validHeight(_ string: String) -> Bool {
 
 let hexSet = CharacterSet(charactersIn: "01234567890ABCDEFabcdef")
 
-func validHex(_ string: String) -> Bool {
+let validHex: Rule = { string in
     guard string.hasPrefix("#") else { return false }
     var string = string
     string.removeFirst()
     return string.rangeOfCharacter(from: hexSet.inverted) == nil
 }
 
-func validPID(_ string: String) -> Bool {
+let validPID: Rule = { string in
     return string.count == 9 && Int(string) != nil
 }

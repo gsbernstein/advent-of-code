@@ -21,7 +21,7 @@ func parse(input: String) -> [Passport] {
 
 func countValid(input: [Passport]) -> Int {
     return input.reduce(into: 0) { (result, passport) in
-        if !reqd.contains(where: { (key: String, pred: (String) -> Bool) -> Bool in
+        if !reqd.contains(where: { (key: String, pred: Rule) -> Bool in
             guard let value = passport[key] else { return true }
             return !pred(value)
         }) {
